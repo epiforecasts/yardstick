@@ -1,91 +1,102 @@
 # SPI-M yardstick calibration
 
 Assessing how the probability-yardstick language in the UK's SPI-M-O consensus statements
-("likely", "highly likely", "realistic possibility", …) corresponds to how often the
+("likely", "highly likely", "realistic possibility", and so on) matched how often the
 statements turned out correct.
 
-The end product is a blinded reviewer survey. Each statement is stripped of its probability
-wording and presented as a bare proposition, and independent reviewers judge, with hindsight,
-whether it turned out correct. Calibration is then assessed by grouping the verdicts by the
-withheld yardstick term.
+SPI-M-O was the modelling group that fed the UK's Scientific Advisory Group for Emergencies
+(SAGE) during COVID-19. Its consensus statements used verbal probability terms from a standard
+UK-government probability yardstick (from the Professional Head of Intelligence Assessment,
+PHIA), which maps each term to a numeric range (for example "likely" is 55–75%). The question
+here: when SPI-M-O said "likely", did the statement come true about 55–75% of the time?
 
-## Status
+The method is a blinded reviewer survey. Each statement is stripped of its probability wording
+and shown as a bare proposition; independent reviewers judge, with hindsight, whether it turned
+out correct; and calibration follows from grouping the verdicts by the withheld yardstick term.
 
-Survey built and ready to deploy: **324 items** (306 real statements + 18 hidden
-quality-control items), spanning February 2020 – February 2022.
+The survey is built and ready to deploy: 324 items (306 real statements and 18 hidden
+quality-control items), spanning February 2020 to February 2022.
 
-## Pipeline
-
-Scripts live in `scripts/` and are **run from the repository root** (they read and write paths
-under `data/`). Rough order:
-
-1. `download.py`: retrieve all consensus statements from gov.uk (rate-limited, identifying
-   User-Agent). Produces `data/pdfs/`, `data/txt/`, `data/manifest.json` (provenance with
-   SHA-256). *Note: the monthly SAGE collections omit ~12% of statements, including all of
-   August 2021; the gov.uk search API is needed for the full set.*
-2. `scan.py`, `classify.py`, `claims.py`, `tense.py`, `make_frame.py`, `dedupe_frame.py`:
-   extract candidate yardstick statements, classify by resolvability, filter and deduplicate.
-3. `wf_strip.js`, `wf_strip_new.js` (multi-agent workflows): strip the probability wording to
-   a bare, self-contained proposition, split compounds, and adversarially verify each against
-   the source. `build_propositions.py`, `build_new_props.py` assemble the results.
-4. `scenario_detailing.py`: resolve named model scenarios (e.g. omicron A–F) to their
-   distinguishing claim; drop figure captions; label irreducibly vague references.
-5. `build_master.py`: merge everything into `data/propositions_master.csv` (the full item set
-   with band and resolvability class).
-6. `build_survey_master.py`: emit the JISC survey JSON and the item map.
-7. `build_lineage.py`, `build_ledger.py`: the audit trail (see below).
-
-The earlier `gen_*`, `build_sheet*`, `build_final`, `rclaims`, `contexts` scripts are
-exploratory or superseded, retained for provenance.
-
-## The deliverable
-
-`data/SPI-M_Yardstick_Review_FINAL.json`: import into JISC Online Surveys
-(onlinesurveys.jisc.ac.uk). 325 pages: an intro, then one page per item (statement as a
-blockquote, exact date, an assessment of correct / incorrect / cannot tell, and a
-High/Medium/Low confidence). Neutral "Item N" titles; no probability term or band shown.
-
-Deploy with **independent** reviewers who do not see each other's responses until all have
-finished. Export responses from JISC and join to `data/survey_item_map.csv` on the question to
-recover each item's band and resolvability class for analysis.
-
-## Audit trail
-
-Every candidate statement is traceable from raw extraction to final survey item:
-
-- `data/lineage_candidates.csv` / `data/final_lineage.csv`: each candidate's fate and reason
-  for inclusion or exclusion.
-- `data/audit_ledger.csv`: every proposition's transformations and final status.
-
-## Repository layout
+## Repository contents
 
 ```
 scripts/          pipeline code (run from repo root)
-data/             inputs, intermediates, outputs (see .gitignore)
+data/answer_key/  sealed answer-key checksums (the only tracked data)
+ANALYSIS_PLAN.md  pre-specified analysis plan (work in progress)
 README.md
-ANALYSIS_PLAN.md  pre-specified analysis plan (WIP)
 LICENSE
 ```
 
-Corpus files (`data/pdfs`, `data/txt`, …) and JSON (build artifacts, large intermediates, and
-`controls_key.json`) are git-ignored; regenerate them by running the pipeline. `manifest.json`
-holds the provenance record; `git add -f` it if you want that tracked.
+The repository holds the pipeline code, the analysis plan, the licence, and the sealed
+answer-key checksums. It does not hold the source documents, the generated propositions, the
+survey file, or the audit tables: everything else under `data/` is git-ignored and regenerated
+by the pipeline, and some of it is deliberately withheld until coding is complete (see
+[Sharing and embargo](#sharing-and-embargo)). Wherever a `data/...` file is named below, it is
+a pipeline output you generate, not a file that ships with the repository.
+
+`manifest.json` holds the provenance record; `git add -f` it if you want that tracked.
+
+## Pipeline
+
+Scripts live in `scripts/` and are run from the repository root (they read and write paths
+under `data/`). Rough order:
+
+1. `download.py`: retrieve all consensus statements from gov.uk (rate-limited, identifying
+   User-Agent). Produces `data/pdfs/`, `data/txt/`, and `data/manifest.json` (provenance with
+   SHA-256). Note: the monthly SAGE collections omit about 12% of statements, including all of
+   August 2021; the gov.uk search API is needed for the full set.
+2. `scan.py`, `classify.py`, `claims.py`, `tense.py`, `make_frame.py`, `dedupe_frame.py`:
+   extract candidate yardstick statements, classify by resolvability (whether a statement can
+   be judged true or false at all), filter and deduplicate.
+3. `wf_strip.js`, `wf_strip_new.js` (multi-agent workflows): strip the probability wording to a
+   bare, self-contained proposition, split compound statements, and adversarially verify each
+   against the source. `build_propositions.py` and `build_new_props.py` assemble the results.
+4. `scenario_detailing.py`: resolve named model scenarios (for example omicron A–F) to their
+   distinguishing claim, drop figure captions, and label irreducibly vague references.
+5. `build_master.py`: merge everything into `data/propositions_master.csv`, the full item set
+   with its band and resolvability class.
+6. `build_survey_master.py`: produce the survey file and the item map (below).
+7. `build_lineage.py`, `build_ledger.py`: the audit trail (below).
+
+The earlier `gen_*`, `build_sheet*`, `build_final`, `rclaims`, and `contexts` scripts are
+exploratory or superseded, kept for provenance.
+
+## The survey
+
+`build_survey_master.py` produces `data/SPI-M_Yardstick_Review_FINAL.json`, which imports into
+JISC Online Surveys (onlinesurveys.jisc.ac.uk). It has 325 pages: an intro, then one page per
+item (the statement as a blockquote, its exact date, an assessment of correct / incorrect /
+cannot tell, and a High/Medium/Low confidence). Item titles are neutral ("Item N"), and no
+probability term or band is shown.
+
+Deploy it with independent reviewers who do not see each other's responses until all have
+finished. Export the responses from JISC and join them to `data/survey_item_map.csv` on the
+question to recover each item's band and resolvability class for analysis.
+
+## Audit trail
+
+The pipeline records the fate of every candidate statement, from raw extraction to final survey
+item:
+
+- `data/lineage_candidates.csv` and `data/final_lineage.csv`: each candidate's fate and the
+  reason it was included or excluded.
+- `data/audit_ledger.csv`: every proposition's transformations and final status.
 
 ## Sharing and embargo
 
-The reviewers are also the co-authors, so the study *design* is not secret to them
+The reviewers are also the co-authors, so the study design is not secret to them
 (`ANALYSIS_PLAN.md` records it and is shareable). What must stay out of reviewers' hands until
-they have finished coding is the **answer key** (the probability band attached to each item)
-and the identity of the quality-control items.
+they have finished coding is the answer key: the probability band attached to each item, and
+the identity of the quality-control items.
 
-The band answer key is scattered through the working files (it appears in
-`survey_item_map.csv`, `propositions_master.csv`, `audit_ledger.csv`, and others), which are
-all regenerable. The repository therefore **tracks only** the sealed answer key in
-`data/answer_key/` and ignores the rest of `data/`; run the pipeline to regenerate the working
-files. The sealed folder is committed so the answer key is on file and timestamped before
-coding (pre-registration), while a `README` there records the reviewers' agreement not to open
-it until coding is done. For tamper-proof pre-registration, register its SHA-256 hashes
-externally (e.g. OSF); see `data/answer_key/README.md`.
+The band is scattered through the working files (`survey_item_map.csv`,
+`propositions_master.csv`, `audit_ledger.csv`, and others), all of which are regenerable. The
+repository therefore tracks only the sealed answer key in `data/answer_key/` and ignores the
+rest of `data/`. That folder holds the SHA-256 checksums of the answer key (committed as a
+pre-registration proof) and a README recording the reviewers' agreement not to open it until
+coding is done. The plaintext answer key is added only after coding, and anyone can then check
+it against the committed checksums. For tamper-proof pre-registration, register the checksums
+externally (for example on OSF); see `data/answer_key/README.md`.
 
 ## Licence and attribution
 
@@ -107,7 +118,7 @@ Development Framework for All-Source Intelligence Assessment* (2019).
 
 Candidate statements were extracted from the source documents and rewritten into blinded
 propositions with LLM assistance and adversarial verification against the source. The exact
-prompts used are in the workflow scripts (`scripts/wf_strip.js`, `wf_strip_new.js`,
+prompts are in the workflow scripts (`scripts/wf_strip.js`, `wf_strip_new.js`,
 `wf_annotate.js`); the pipeline and audit trail are in this repository. Suggested methods
 wording:
 
@@ -115,5 +126,5 @@ wording:
 > assistance and adversarial verification against the source; code and prompts are available
 > at [DOI].
 
-Replace `[DOI]` with an archived snapshot (e.g. Zenodo or OSF) taken at submission, so the
-citation stays stable.
+Replace `[DOI]` with an archived snapshot (for example on Zenodo or OSF) taken at submission,
+so the citation stays stable.
