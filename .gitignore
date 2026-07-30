@@ -1,0 +1,18 @@
+# Everything under data/ is regenerable via the pipeline (scripts/), and much of it
+# carries the withheld band answer key.
+data/*
+!data/answer_key/
+
+# The sealed answer key itself is NOT committed until coding is complete — only its
+# README and SHA-256 checksums (the pre-registration proof) are tracked.
+data/answer_key/*
+!data/answer_key/README.md
+!data/answer_key/CHECKSUMS.txt
+
+# Scratch / working exports
+scratchpad/
+SPI-M Yardstick Review.json
+
+# OS / editor
+.DS_Store
+*.swp
