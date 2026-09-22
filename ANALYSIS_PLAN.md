@@ -18,6 +18,7 @@ numeric band?
   stripped of their probability wording, plus 18 synthetic quality-control items. Construction
   is described in `README.md` and the pipeline; the per-item band is sealed in
   `data/answer_key/`.
+TODO retry prompt on other models or tweak prompt wording to check sensitivity to volume and content 
 - **Verdicts.** Each item is assessed independently by every reviewer as *correct*,
   *incorrect*, or *cannot tell*, with a *high / medium / low* confidence in that assessment,
   plus free-text sources and notes.
@@ -38,7 +39,7 @@ Applied uniformly by all reviewers, agreed before coding:
   underlying quantity is latent: "R below 1" is assessed against whether the epidemic declined
   (hospitalisations, deaths), not against a modelled R value.
 - Reviewers record which basis they used in the notes.
-
+<!-- TODO llm first pass at which are resolvable to prioritise. or extract all statements, group and human classify. for latent quantities we need a consistent guide to resolution eg by case count, infection survey.-->
 Consequence: the resolvability rate is partly set by this convention and is reported as a
 stated scope decision, not an emergent finding.
 
@@ -54,7 +55,7 @@ stated scope decision, not an emergent finding.
 4. Clustering: statements within a document and across consecutive weeks are not independent.
    Account for this in the intervals **[TBD: cluster by document / epidemic phase, or a
    mixed-effects model]**.
-
+TODO I'm not sure about the clustering given reports covered diverse quantities. also need to report frequency of use of each band in its own right.
 ## 5. Secondary analyses
 
 - **By resolvability class.** Calibration and resolvability rate reported separately for
@@ -68,7 +69,7 @@ stated scope decision, not an emergent finding.
   scored against a band.
 - **Over- vs under-confidence.** Whether observed proportions sit systematically above or below
   band midpoints.
-
+TODO off yardstick needs more detail and is more interesting and complex (eg scrape all probabilistic language around the same set of quantities; identify where reporting is binary (we believe that X)?
 ## 6. Reviewers and agreement
 
 - Number of reviewers: **[TBD]**.
@@ -79,7 +80,7 @@ stated scope decision, not an emergent finding.
   reviewers split between *cannot tell* and a definite verdict.
 - The primary calibration analysis uses **[TBD: adjudicated verdicts / verdicts where reviewers
   agree / each reviewer separately then pooled]**.
-
+TODO specify
 ## 7. Quality-control items
 
 The 18 synthetic items have known answers (12 false, 5 true, 1 latent "cannot tell"). Reviewer
@@ -93,7 +94,7 @@ Fixed before the answer key is unsealed: the resolvability convention (§3), the
 analysis (§4), the item set and their (sealed) bands, and this plan. The reviewer-dependent
 choices in §6 and the interval methods in §4 are to be settled **[TBD]** and pinned before
 unsealing.
-
+TODO add a pilot phase to test procedure and rater reliability
 ## 9. Deviations
 
 Any departure from this plan will be recorded here with its reason.
