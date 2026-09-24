@@ -42,9 +42,13 @@ Scripts live in `scripts/` and are run from the repository root (they read and w
 under `data/`). Rough order:
 
 1. `download.py`: retrieve all consensus statements from gov.uk (rate-limited, identifying
-   User-Agent). Produces `data/pdfs/`, `data/txt/`, and `data/manifest.json` (provenance with
-   SHA-256). Note: the monthly SAGE collections omit about 12% of statements, including all of
-   August 2021; the gov.uk search API is needed for the full set.
+   User-Agent). Reads the list of publications and their attachments from
+   `data/consensus_with_attachments.json`, and produces `data/pdfs/` and `data/manifest.json`
+   (provenance with SHA-256). Note: the monthly SAGE collections omit about 12% of statements,
+   including all of August 2021; the gov.uk search API is needed for the full set.
+   Not yet in the repository: the script that builds `data/consensus_with_attachments.json`,
+   and the text extraction that writes `data/txt/` from `data/pdfs/`, which the scripts in
+   step 2 read.
 2. `scan.py`, `classify.py`, `claims.py`, `tense.py`, `make_frame.py`, `dedupe_frame.py`:
    extract candidate yardstick statements, classify by resolvability (whether a statement can
    be judged true or false at all), filter and deduplicate.

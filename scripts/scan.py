@@ -1,15 +1,17 @@
 import re, glob, os, json
 from collections import Counter, defaultdict
 
-# PHIA yardstick terms, longest-first so "highly unlikely" wins over "unlikely"
+# PHIA yardstick terms, longest-first so "highly unlikely" wins over "unlikely".
+# Ranges as in the PHIA yardstick reproduced in the consensus statements' annex
+# (same bands as make_frame.py); only the term names are used below.
 TERMS = [
     ("almost certain",        (0.95, 1.00)),
     ("highly likely",         (0.80, 0.90)),
-    ("highly unlikely",       (0.05, 0.10)),
-    ("realistic possibility", (0.25, 0.50)),
+    ("highly unlikely",       (0.10, 0.20)),
+    ("realistic possibility", (0.40, 0.50)),
     ("remote chance",         (0.00, 0.05)),
     ("likely",                (0.55, 0.75)),
-    ("unlikely",              (0.10, 0.20)),
+    ("unlikely",              (0.25, 0.35)),
     ("probably",              (0.55, 0.75)),
 ]
 pattern = re.compile(r'\b(' + '|'.join(re.escape(t) for t,_ in TERMS) + r')\b', re.I)
