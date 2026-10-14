@@ -1,5 +1,6 @@
 import json, csv, re
 from collections import Counter
+from exclusions import EXCLUDE
 
 prov={r["claim_id"]:r for r in csv.DictReader(open("data/provenance.csv",encoding="utf-8"))}
 ck={c["claim_id"]:c for c in json.load(open("data/controls_key.json"))}
@@ -7,10 +8,6 @@ decisions={d["item_id"]:d for d in json.load(open("data/scenario_decisions.json"
 
 def prov_date(src_claim_id):
     return prov.get(src_claim_id,{}).get("exact_date","")
-
-# A claim about R is resolvable only through its position relative to 1, which shows as epidemic
-# growth or decline. Any other value of R is latent, so checking it needs another model estimate.
-EXCLUDE={"D019","D024","D027","D032","D033","D034","D035","D036","D083","D095","N032-a","N032-b","N074-b","N096-a","N096-b"}
 
 master=[]  # each: item_id, kind, exact_date, band, proposition, orig_class, flags
 

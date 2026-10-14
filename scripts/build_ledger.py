@@ -1,5 +1,6 @@
 import json, csv, re
 from collections import Counter
+from exclusions import R_VALUE, R_VALUE_REASON
 
 # ---- Stage A: exact candidate lineage (298 -> filter -> dedup -> 119) ----
 lin=list(csv.DictReader(open("data/lineage_candidates.csv",encoding="utf-8")))
@@ -47,6 +48,7 @@ for cid in frame:
         if iid in survey: status="IN SURVEY as "+survey[iid]["survey_item"]
         elif iid in ("D093-a","D093-b"): status="merged into D093 (IN SURVEY as "+survey.get("D093",{}).get("survey_item","?")+")"
         elif iid in DROP_REASON: status="DROPPED: "+DROP_REASON[iid]
+        elif iid in R_VALUE: status="DROPPED: "+R_VALUE_REASON
         else: status="CHECK"
         ledger.append({"source_id":cid,"item_id":iid,"band":band,
             "proposition":(survey.get(iid,{}).get("proposition") or p.get("text",""))[:150],
