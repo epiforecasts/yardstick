@@ -2,5 +2,5 @@
 # The plaintext files themselves are NOT committed until coding is complete.
 # After coding, verify the revealed files against these hashes.
 
-75f78364649f258a536fb65c0c49fec2acad0eba104ba01dfb9524e8d1917296  survey_item_map.csv
+715fa97fc57ef0d544db2b7b39ae0b8bbd99afea37b740f5a8d9b236bb128da3  survey_item_map.csv
 10edc030b6fe1cc240df37b18ed88eb1b3aee88901f9f4f93cb5a2e2be71cdf8  controls_key.json

@@ -8,11 +8,17 @@ decisions={d["item_id"]:d for d in json.load(open("data/scenario_decisions.json"
 def prov_date(src_claim_id):
     return prov.get(src_claim_id,{}).get("exact_date","")
 
+# Headline R ranges are out of scope: R is latent, so any check against them is itself a model output.
+# Directional R claims ("R is below 1") stay in.
+EXCLUDE={"D032","D033","D034","D035","D036"}
+
 master=[]  # each: item_id, kind, exact_date, band, proposition, orig_class, flags
 
 # ---- 1. existing real items from propositions_final (fixed-fact set) ----
 existing=list(csv.DictReader(open("data/propositions_final.csv",encoding="utf-8")))
 for r in existing:
+    if r["item_id"] in EXCLUDE:
+        continue
     if r["src_claim_id"][0]=="D":
         master.append({"item_id":r["item_id"],"kind":"real","exact_date":prov_date(r["src_claim_id"]),
             "band":r["band"],"proposition":r["proposition"],"orig_class":"fixed-fact","flags":""})

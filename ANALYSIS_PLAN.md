@@ -14,7 +14,24 @@ numeric band?
 
 ## 2. Data
 
-- **Items.** 324 survey items: 306 statements extracted from the consensus statements and
+- **Corpus.** The SPI-M-O consensus statements and consensus views published on gov.uk by the
+  Scientific Advisory Group for Emergencies: 94 publications (95 PDFs), dated February 2020 to
+  February 2022 and published from March 2020 to February 2022. They were found through the
+  gov.uk search API (query `SPI-M-O`, organisation SAGE, title naming SPI-M and a consensus
+  statement or view; `scripts/list_statements.py`). The monthly SAGE collections omit about
+  12% of them.
+- **Excluded from the corpus.**
+  - *UKHSA EMRG consensus statements* (54, July 2021 to December 2022). These are UKHSA
+    summaries of R, growth rate, incidence and prevalence. They reprint the yardstick in an
+    annex but use it in the text only about ten times, each time for a caveat about the data
+    ("unlikely to have materially impacted the estimates").
+  - *SPI-M statements from the 2009 H1N1 pandemic.* These concern a different epidemic, and it
+    is unclear whether they followed the yardstick convention.
+- **Excluded from the items.** Headline estimates of R by nation (five items from the 10 June
+  2020 statement, such as "R in England is between 0.8 and 1.0"). Because R is latent, any
+  check against such a range is itself a model output. Directional claims about R ("R is below 1")
+  are kept and resolved as in §3.
+- **Items.** 319 survey items: 301 statements extracted from the consensus statements and
   stripped of their probability wording, plus 18 synthetic quality-control items. Construction
   is described in `README.md` and the pipeline; the per-item band is sealed in
   `data/answer_key/`.
