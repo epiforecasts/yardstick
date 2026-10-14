@@ -35,7 +35,7 @@ BANDNUM={"remote chance":">0-5%","highly unlikely":"10-20%","unlikely":"25-35%",
  "realistic possibility":"40-<50%","likely":"55-75%","probably":"55-75%","probable":"55-75%",
  "highly likely":"80-90%","almost certain":"95-<100%","very likely":"OFF-YARDSTICK"}
 def bandlabel(terms):
-    t=(terms or "").split(",")[0].strip().lower()
+    t=re.sub(r"^an? ","",(terms or "").split(",")[0].strip().lower())
     return f"{t} ({BANDNUM.get(t,'?')})"
 def origclass(nid):
     m=newmeta.get(nid,{})
