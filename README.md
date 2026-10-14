@@ -14,7 +14,7 @@ The method is a blinded reviewer survey. Each statement is stripped of its proba
 and shown as a bare proposition; independent reviewers judge, with hindsight, whether it turned
 out correct; and calibration follows from grouping the verdicts by the withheld yardstick term.
 
-The survey is built and ready to deploy: 315 items (297 real statements and 18 hidden
+The survey is built and ready to deploy: 314 items (296 real statements and 18 hidden
 quality-control items), spanning February 2020 to February 2022.
 
 ## Repository contents
@@ -66,7 +66,7 @@ exploratory or superseded, kept for provenance.
 ## The survey
 
 `build_survey_master.py` produces `data/SPI-M_Yardstick_Review_FINAL.json`, which imports into
-JISC Online Surveys (onlinesurveys.jisc.ac.uk). It has 316 pages: an intro, then one page per
+JISC Online Surveys (onlinesurveys.jisc.ac.uk). It has 315 pages: an intro, then one page per
 item (the statement as a blockquote, its exact date, an assessment of correct / incorrect /
 cannot tell, and a High/Medium/Low confidence). Item titles are neutral ("Item N"), and no
 probability term or band is shown.

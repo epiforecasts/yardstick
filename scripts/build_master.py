@@ -10,7 +10,7 @@ def prov_date(src_claim_id):
 
 # Numeric estimates of the current R are out of scope: R is latent, so any check against them is
 # itself a model output. Directional R claims ("R is below 1") stay in.
-EXCLUDE={"D019","D024","D027","D032","D033","D034","D035","D036","D095"}
+EXCLUDE={"D019","D024","D027","D032","D033","D034","D035","D036","D095","N074-b"}
 
 master=[]  # each: item_id, kind, exact_date, band, proposition, orig_class, flags
 
@@ -53,7 +53,7 @@ def origclass(nid):
 for r in newrows:
     iid=r["item_id"]; nid=r["src_new_id"]
     dec=decisions.get(iid)
-    if dec and dec["action"]=="drop":
+    if iid in EXCLUDE or (dec and dec["action"]=="drop"):
         continue
     prop=r["proposition"]; flags=[]; band=bandlabel(r["band_terms"])
     if dec:
