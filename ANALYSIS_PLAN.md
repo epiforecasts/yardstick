@@ -27,12 +27,13 @@ numeric band?
     ("unlikely to have materially impacted the estimates").
   - *SPI-M statements from the 2009 H1N1 pandemic.* These concern a different epidemic, and it
     is unclear whether they followed the yardstick convention.
-- **Excluded from the items.** Numeric estimates of the current R, as a value or a range (ten
-  items, such as "R in England is between 0.8 and 1.0" and "R is currently around 0.6"),
-  including a claim that R is above a published estimate. Because R is latent, any check
-  against such an estimate is itself a model output. Directional claims about R ("R is below
-  1") are kept and resolved as in §3.
-- **Items.** 314 survey items: 296 statements extracted from the consensus statements and
+- **Excluded from the items.** Claims that put a value on R other than its position relative
+  to 1: estimates of the current R ("R in England is between 0.8 and 1.0", "close to 1"),
+  forecasts of the value R will reach ("as low as 0.6"), and estimated effects on R ("increases
+  R by a factor of 1.1 to 1.5"), 15 items in all. Because R is latent, checking such a value
+  needs another model estimate. Claims about whether R is above or below 1 are kept and
+  resolved as in §3.
+- **Items.** 309 survey items: 291 statements extracted from the consensus statements and
   stripped of their probability wording, plus 18 synthetic quality-control items. Construction
   is described in `README.md` and the pipeline; the per-item band is sealed in
   `data/answer_key/`.
