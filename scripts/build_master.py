@@ -8,9 +8,9 @@ decisions={d["item_id"]:d for d in json.load(open("data/scenario_decisions.json"
 def prov_date(src_claim_id):
     return prov.get(src_claim_id,{}).get("exact_date","")
 
-# Headline R ranges are out of scope: R is latent, so any check against them is itself a model output.
-# Directional R claims ("R is below 1") stay in.
-EXCLUDE={"D032","D033","D034","D035","D036"}
+# Numeric estimates of the current R are out of scope: R is latent, so any check against them is
+# itself a model output. Directional R claims ("R is below 1") stay in.
+EXCLUDE={"D019","D024","D027","D032","D033","D034","D035","D036","D095"}
 
 master=[]  # each: item_id, kind, exact_date, band, proposition, orig_class, flags
 
