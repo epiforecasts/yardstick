@@ -90,5 +90,5 @@ dc=Counter(x["exact_date"] for x in itemmap)
 iso=[x["item_id"] for x in itemmap if x["kind"]=="control" and dc[x["exact_date"]]==1]
 print(f"SURVEY: {len(pages)} pages (1 intro + {seq} items)")
 print(f"  q-ids unique: {len(set(qids))==len(qids)} | note leaks: {noteleak} | isolated controls: {iso or 'none'}")
-print(f"  neutral titles: {all(re.match(r'Item \\d+$',p['title']) for p in pages if p['title'].startswith('Item'))}")
+print(f"  neutral titles: {all(re.match(r'Item \d+$',p['title']) for p in pages if p['title'].startswith('Item'))}")
 print(f"  kinds: {dict(Counter(x['kind'] for x in itemmap))}")

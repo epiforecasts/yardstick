@@ -14,7 +14,7 @@ The method is a blinded reviewer survey. Each statement is stripped of its proba
 and shown as a bare proposition; independent reviewers judge, with hindsight, whether it turned
 out correct; and calibration follows from grouping the verdicts by the withheld yardstick term.
 
-The survey is built and ready to deploy: 324 items (306 real statements and 18 hidden
+The survey is built and ready to deploy: 309 items (291 real statements and 18 hidden
 quality-control items), spanning February 2020 to February 2022.
 
 ## Repository contents
@@ -41,22 +41,24 @@ a pipeline output you generate, not a file that ships with the repository.
 Scripts live in `scripts/` and are run from the repository root (they read and write paths
 under `data/`). Rough order:
 
-1. `download.py`: retrieve all consensus statements from gov.uk (rate-limited, identifying
-   User-Agent). Produces `data/pdfs/`, `data/txt/`, and `data/manifest.json` (provenance with
-   SHA-256). Note: the monthly SAGE collections omit about 12% of statements, including all of
-   August 2021; the gov.uk search API is needed for the full set.
-2. `scan.py`, `classify.py`, `claims.py`, `tense.py`, `make_frame.py`, `dedupe_frame.py`:
+1. `list_statements.py`: list the SPI-M-O consensus statements and their attachments through
+   the gov.uk search and content APIs, into `data/consensus_with_attachments.json`. The search
+   API is used because the monthly SAGE collections omit about 12% of statements, including
+   all of August 2021. The scope is set out in `ANALYSIS_PLAN.md`.
+2. `download.py`: retrieve the statements' PDFs (rate-limited, identifying User-Agent).
+   Produces `data/pdfs/`, `data/txt/`, and `data/manifest.json` (provenance with SHA-256).
+3. `scan.py`, `classify.py`, `claims.py`, `tense.py`, `make_frame.py`, `dedupe_frame.py`:
    extract candidate yardstick statements, classify by resolvability (whether a statement can
    be judged true or false at all), filter and deduplicate.
-3. `wf_strip.js`, `wf_strip_new.js` (multi-agent workflows): strip the probability wording to a
+4. `wf_strip.js`, `wf_strip_new.js` (multi-agent workflows): strip the probability wording to a
    bare, self-contained proposition, split compound statements, and adversarially verify each
    against the source. `build_propositions.py` and `build_new_props.py` assemble the results.
-4. `scenario_detailing.py`: resolve named model scenarios (for example omicron A–F) to their
+5. `scenario_detailing.py`: resolve named model scenarios (for example omicron A–F) to their
    distinguishing claim, drop figure captions, and label irreducibly vague references.
-5. `build_master.py`: merge everything into `data/propositions_master.csv`, the full item set
+6. `build_master.py`: merge everything into `data/propositions_master.csv`, the full item set
    with its band and resolvability class.
-6. `build_survey_master.py`: produce the survey file and the item map (below).
-7. `build_lineage.py`, `build_ledger.py`: the audit trail (below).
+7. `build_survey_master.py`: produce the survey file and the item map (below).
+8. `build_lineage.py`, `build_ledger.py`: the audit trail (below).
 
 The earlier `gen_*`, `build_sheet*`, `build_final`, `rclaims`, and `contexts` scripts are
 exploratory or superseded, kept for provenance.
@@ -64,7 +66,7 @@ exploratory or superseded, kept for provenance.
 ## The survey
 
 `build_survey_master.py` produces `data/SPI-M_Yardstick_Review_FINAL.json`, which imports into
-JISC Online Surveys (onlinesurveys.jisc.ac.uk). It has 325 pages: an intro, then one page per
+JISC Online Surveys (onlinesurveys.jisc.ac.uk). It has 310 pages: an intro, then one page per
 item (the statement as a blockquote, its exact date, an assessment of correct / incorrect /
 cannot tell, and a High/Medium/Low confidence). Item titles are neutral ("Item N"), and no
 probability term or band is shown.

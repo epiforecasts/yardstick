@@ -8,15 +8,18 @@ res=json.load(open("data/strip_results_new.json"))
 meta={m["new_id"]:m for m in json.load(open("data/new_claims_meta.json")) if m.get("new_id")}
 prov={r["claim_id"]:r for r in csv.DictReader(open("data/provenance.csv",encoding="utf-8"))}
 
-# slug -> exact date + statement, for the new items (via uid->slug in meta; date from statement title)
+# slug -> exact date, for the new items (via uid->slug in meta). The statement title carries the
+# date; the slug is only a fallback because gov.uk slugs contain typos (17-february-2019 for 2020).
+MONTHS=["january","february","march","april","may","june","july","august","september","october","november","december"]
+DATE_RE=r'(\d{1,2})[ -](%s)[ -](20\d\d)' % "|".join(MONTHS)
+titles={x["slug"]:x["title"] for x in json.load(open("data/manifest.json"))}
 def date_from_slug(slug):
     # find any provenance row with this slug
     for r in prov.values():
         if r["slug"]==slug: return r["exact_date"]
-    # derive from slug date words
-    m=re.search(r'(\d{1,2})-(january|february|march|april|may|june|july|august|september|october|november|december)-(20\d\d)', slug)
+    m=re.search(DATE_RE, titles.get(slug,""), re.I) or re.search(DATE_RE, slug, re.I)
     if m:
-        mm=["january","february","march","april","may","june","july","august","september","october","november","december"].index(m.group(2))+1
+        mm=MONTHS.index(m.group(2).lower())+1
         return f"{m.group(3)}-{mm:02d}-{int(m.group(1)):02d}"
     return ""
 

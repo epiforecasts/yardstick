@@ -1,5 +1,6 @@
 import json, csv, re
 from collections import Counter
+from exclusions import EXCLUDE
 
 prov={r["claim_id"]:r for r in csv.DictReader(open("data/provenance.csv",encoding="utf-8"))}
 ck={c["claim_id"]:c for c in json.load(open("data/controls_key.json"))}
@@ -13,6 +14,8 @@ master=[]  # each: item_id, kind, exact_date, band, proposition, orig_class, fla
 # ---- 1. existing real items from propositions_final (fixed-fact set) ----
 existing=list(csv.DictReader(open("data/propositions_final.csv",encoding="utf-8")))
 for r in existing:
+    if r["item_id"] in EXCLUDE:
+        continue
     if r["src_claim_id"][0]=="D":
         master.append({"item_id":r["item_id"],"kind":"real","exact_date":prov_date(r["src_claim_id"]),
             "band":r["band"],"proposition":r["proposition"],"orig_class":"fixed-fact","flags":""})
@@ -35,7 +38,7 @@ BANDNUM={"remote chance":">0-5%","highly unlikely":"10-20%","unlikely":"25-35%",
  "realistic possibility":"40-<50%","likely":"55-75%","probably":"55-75%","probable":"55-75%",
  "highly likely":"80-90%","almost certain":"95-<100%","very likely":"OFF-YARDSTICK"}
 def bandlabel(terms):
-    t=(terms or "").split(",")[0].strip().lower()
+    t=re.sub(r"^an? ","",(terms or "").split(",")[0].strip().lower())
     return f"{t} ({BANDNUM.get(t,'?')})"
 def origclass(nid):
     m=newmeta.get(nid,{})
@@ -47,7 +50,7 @@ def origclass(nid):
 for r in newrows:
     iid=r["item_id"]; nid=r["src_new_id"]
     dec=decisions.get(iid)
-    if dec and dec["action"]=="drop":
+    if iid in EXCLUDE or (dec and dec["action"]=="drop"):
         continue
     prop=r["proposition"]; flags=[]; band=bandlabel(r["band_terms"])
     if dec:
