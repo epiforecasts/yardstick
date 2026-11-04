@@ -25,10 +25,10 @@ also not tracked.
 Each reviewer agrees, before starting and until they have finished coding:
 
 - not to view the files in this folder or anywhere under `data/`;
-- not to read the repository's history before the commit that added this agreement. Earlier
-  versions of the workflow scripts embedded every statement with its band, and an earlier script
-  listed the first version of the quality-control items with their answers. Those controls have
-  been replaced (`../../ANALYSIS_PLAN.md` §9).
+- to read the repository's files only as they currently stand, not earlier versions in its
+  history. Earlier versions of the workflow scripts embedded every statement with its band, and
+  an earlier script listed the first version of the quality-control items with their answers.
+  Those controls have been replaced (`../../ANALYSIS_PLAN.md` §9).
 
 ## Tamper-proof pre-registration (recommended)
 

@@ -9,7 +9,7 @@ from exclusions import DROPPED, DUPLICATE_OF
 
 MERGED={"D093":(["D093-a","D093-b"], "The increasing numbers of detected cases \"not compatible with the UK variant\" are the delta variant, indicating its increasing prevalence.")}
 REWORDED={
- # "likely" inside the parenthesis is a probability word that would reveal the band.
+ # A probability word inside the parenthesis would reveal the band; it is removed.
  "D102":("The observed excess in SARS-CoV-2 reinfections in a highly immune population (over 70% immune from a mixture of natural infection and vaccination) suggests that there is some form of escape from immunity by the omicron variant", "corrected;leak-fixed"),
  # The tail named the modelled scenarios, which are not part of the claim being assessed.
  "D099":("Hospital admissions in England declined during September and October 2021.", "tail-trimmed"),
