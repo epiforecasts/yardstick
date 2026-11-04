@@ -20,11 +20,10 @@ def window(slug, sentence, prefix):
     t=text(slug); i=t.find(sentence[:prefix])
     return t[max(0,i-500):i+len(sentence)+300] if i>=0 else ""
 
-frame=list(csv.DictReader(open("data/reviewer_frame.csv",encoding="utf-8")))
-dedup={r["claim_id"]:r for r in csv.DictReader(open("data/coding_frame_dedup.csv",encoding="utf-8"))}
-payload=[{"claim_id":r["claim_id"],"kind":"real","band":f'{r["probability_term"]} ({r["spim_band"]})',
-          "frame_claim":r["claim"],"source_window":window(dedup[r["claim_id"]]["slug"],r["claim"],40)}
-         for r in frame if r["claim_id"] in dedup]
+frame=list(csv.DictReader(open("data/coding_frame_dedup.csv",encoding="utf-8")))
+payload=[{"claim_id":r["claim_id"],"kind":"real","band":f'{r["term"]} ({r["band"]})',
+          "frame_claim":r["sentence"],"source_window":window(r["slug"],r["sentence"],40)}
+         for r in frame]
 
 classified=json.load(open("data/classified_claims.json"))
 new=[]
