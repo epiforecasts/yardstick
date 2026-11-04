@@ -37,7 +37,8 @@ is where someone catching up starts.
 
 Every issue drafted by an LLM opens with a line or two of intent in a person's own words: why
 this is worth opening, stated by the person who wants it done, not generated. The rest of the
-issue can be drafted by the LLM.
+issue can be drafted by the LLM. The intent line may be tidied for clean language, but stays
+the person's own reasoning, not a rewrite of it, and leaves out any mention of other people.
 
 Every pull request that does not close an issue opens the same way: a line or two from a person
 on why the change is wanted. A pull request that closes an issue already has its intent in that

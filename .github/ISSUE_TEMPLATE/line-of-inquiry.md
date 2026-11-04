@@ -5,7 +5,8 @@ title: ""
 labels: ""
 ---
 
-**Intent** (in your own words): why this is worth opening.
+**Intent** (in your own words, tidied for clean language, without mentioning other people): why
+this is worth opening.
 
 *The rest of this issue was drafted by an LLM.* <!-- delete this line if it wasn't -->
 
