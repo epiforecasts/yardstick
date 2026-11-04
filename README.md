@@ -45,23 +45,49 @@ under `data/`). Rough order:
    the gov.uk search and content APIs, into `data/consensus_with_attachments.json`. The search
    API is used because the monthly SAGE collections omit about 12% of statements, including
    all of August 2021. The scope is set out in `ANALYSIS_PLAN.md`.
-2. `download.py`: retrieve the statements' PDFs (rate-limited, identifying User-Agent).
-   Produces `data/pdfs/`, `data/txt/`, and `data/manifest.json` (provenance with SHA-256).
-3. `scan.py`, `classify.py`, `claims.py`, `tense.py`, `make_frame.py`, `dedupe_frame.py`:
+2. `download.py`: retrieve the statements' PDFs (rate-limited, identifying User-Agent) and
+   extract their text with `pdftotext -layout` (poppler). Produces `data/pdfs/`, `data/txt/`,
+   and `data/manifest.json` (provenance with SHA-256).
+3. `scan.py`, `claims.py`, `classify.py`, `tense.py`, `make_frame.py`, `dedupe_frame.py`:
    extract candidate yardstick statements, classify by resolvability (whether a statement can
-   be judged true or false at all), filter and deduplicate.
-4. `wf_strip.js`, `wf_strip_new.js` (multi-agent workflows): strip the probability wording to a
-   bare, self-contained proposition, split compound statements, and adversarially verify each
-   against the source. `build_propositions.py` and `build_new_props.py` assemble the results.
-5. `scenario_detailing.py`: resolve named model scenarios (for example omicron A–F) to their
-   distinguishing claim, drop figure captions, and label irreducibly vague references.
-6. `build_master.py`: merge everything into `data/propositions_master.csv`, the full item set
-   with its band and resolvability class.
-7. `build_survey_master.py`: produce the survey file and the item map (below).
-8. `build_lineage.py`, `build_ledger.py`: the audit trail (below).
+   be judged true or false at all), filter and deduplicate into the coding frame
+   (`data/coding_frame_dedup.csv`).
+4. `build_lineage.py`, `select_new_claims.py`, `build_strip_payload.py`: link each frame claim
+   to its candidates, select the candidates outside the frame for a second run, and build the
+   claim payloads for both stripping runs.
+5. `wf_strip.js`, `wf_strip_new.js` (multi-agent workflows, run with the payloads as their
+   `args`): strip the probability wording to a bare, self-contained proposition, split compound
+   statements, and adversarially verify each against the source. The results,
+   `data/strip_results.json` and `data/strip_results_new.json`, cannot be regenerated exactly
+   and are archived with the answer key (below). `build_propositions.py`,
+   `finalise_propositions.py` (the edits made on review) and `build_new_props.py` assemble them.
+6. `scenario_detailing.py`: renders the decisions on named model scenarios (for example omicron
+   A–F) in `data/scenario_decisions.json`: state the distinguishing claim, drop figure captions,
+   or label irreducibly vague references.
+7. `build_master.py`: merge everything, with the quality-control items from
+   `data/controls_key.json`, into `data/propositions_master.csv`, the full item set with its band
+   and resolvability class.
+8. `build_survey_master.py`: produce the survey file and the item map (below).
+9. `build_ledger.py`: the audit trail (below).
 
-The earlier `gen_*`, `build_sheet*`, `build_final`, `rclaims`, and `contexts` scripts are
-exploratory or superseded, kept for provenance.
+Items dropped by scope rule or on review are listed in `exclusions.py`. The `gen_jisc`,
+`gen_native`, `build_sheet*`, `build_final`, `build_survey_final`, `rclaims`, and `contexts`
+scripts and the `wf_annotate*.js` workflows are exploratory or superseded, kept for provenance;
+`data/archive_ai_runs/README.md` describes the abandoned annotation runs.
+
+### Inputs that are not generated
+
+No script can recreate four of the inputs. They are kept as data and, because each reveals bands
+or answers, sealed with the answer key (`data/answer_key/CHECKSUMS.txt`):
+
+- `strip_results.json`, `strip_results_new.json`: the output of the two stripping runs (16 and
+  28 July 2026). The workflow scripts name the model by an alias that does not pin a version,
+  and a rerun can differ.
+- `scenario_decisions.json`: the hand-made decisions on scenario references.
+- `controls_key.json`: the quality-control items and their answers.
+
+The first stripping run also included the first version of the quality-control items, which
+were replaced before coding (`ANALYSIS_PLAN.md` §9); its archived results keep them.
 
 ## The survey
 
@@ -77,8 +103,8 @@ question to recover each item's band and resolvability class for analysis.
 
 ## Audit trail
 
-The pipeline records the fate of every candidate statement, from raw extraction to final survey
-item:
+The pipeline (`build_lineage.py`, `build_ledger.py`) records the fate of every candidate
+statement, from raw extraction to final survey item:
 
 - `data/lineage_candidates.csv` and `data/final_lineage.csv`: each candidate's fate and the
   reason it was included or excluded.
@@ -92,9 +118,11 @@ they have finished coding is the answer key: the probability band attached to ea
 the identity of the quality-control items.
 
 The band is scattered through the working files (`survey_item_map.csv`,
-`propositions_master.csv`, `audit_ledger.csv`, and others), all of which are regenerable. The
-repository therefore tracks only the sealed answer key in `data/answer_key/` and ignores the
-rest of `data/`. That folder holds the SHA-256 checksums of the answer key (committed as a
+`propositions_master.csv`, `audit_ledger.csv`, and others). The repository therefore tracks
+only the sealed answer key in `data/answer_key/` and ignores the rest of `data/`, and the
+scripts read bands only from those ignored files. Earlier versions of the scripts embedded
+claims with their bands, so the repository's history is covered by the same agreement as the
+answer key (`data/answer_key/README.md`). That folder holds the SHA-256 checksums of the answer key (committed as a
 pre-registration proof) and a README recording the reviewers' agreement not to open it until
 coding is done. The plaintext answer key is added only after coding, and anyone can then check
 it against the committed checksums. For tamper-proof pre-registration, register the checksums
