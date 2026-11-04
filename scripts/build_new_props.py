@@ -6,7 +6,10 @@ if not os.path.exists("data/strip_results_new.json"):
 
 res=json.load(open("data/strip_results_new.json"))
 meta={m["new_id"]:m for m in json.load(open("data/new_claims_meta.json")) if m.get("new_id")}
-prov={r["claim_id"]:r for r in csv.DictReader(open("data/provenance.csv",encoding="utf-8"))}
+# A statement's date is the first date of any coding-frame claim made in it.
+frame_date={}
+for r in csv.DictReader(open("data/coding_frame_dedup.csv",encoding="utf-8")):
+    frame_date.setdefault(r["slug"],r["first_date"])
 
 # slug -> exact date, for the new items (via uid->slug in meta). The statement title carries the
 # date; the slug is only a fallback because gov.uk slugs contain typos (17-february-2019 for 2020).
@@ -14,9 +17,7 @@ MONTHS=["january","february","march","april","may","june","july","august","septe
 DATE_RE=r'(\d{1,2})[ -](%s)[ -](20\d\d)' % "|".join(MONTHS)
 titles={x["slug"]:x["title"] for x in json.load(open("data/manifest.json"))}
 def date_from_slug(slug):
-    # find any provenance row with this slug
-    for r in prov.values():
-        if r["slug"]==slug: return r["exact_date"]
+    if slug in frame_date: return frame_date[slug]
     m=re.search(DATE_RE, titles.get(slug,""), re.I) or re.search(DATE_RE, slug, re.I)
     if m:
         mm=MONTHS.index(m.group(2).lower())+1
