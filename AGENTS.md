@@ -47,7 +47,7 @@ Example:
 
 An automated check (`.github/workflows/pr-conventions.yml`) fails a pull request whose
 description has neither an intent line nor a reference to an issue it closes. It checks for the
-presence of either, not for whether an intent line reads as genuinely a person's own words — that
+presence of either, not for whether an intent line reads as genuinely a person's own words; that
 judgement is left to review.
 
 ## Attribution
