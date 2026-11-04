@@ -61,6 +61,10 @@ Text an LLM drafted, in an issue, pull request, or comment, is either posted fro
 `sbfnk-bot` account or says plainly that an LLM drafted it. Nobody should have to guess, from
 the text alone, whether a person or a model wrote it.
 
+A pull request names a person's decision only where that person overturned the agent: went
+against what the agent proposed or did. Everywhere else, a decision is described without
+naming who made it.
+
 ## Open problem
 
 These conventions do not address unequal access to AI tools across contributors. Someone
