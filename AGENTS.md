@@ -19,11 +19,16 @@ item, only silence on whether comment is wanted.
 
 ## The notebook
 
-`notebook/` holds one entry per line of inquiry: what was asked, what was tried, what was
-found, and what is still uncertain. An entry is drafted after the line of inquiry's work (or a
-significant step in it) is done, by an LLM if one did the drafting; a person then cuts it down
-to what is worth keeping and approves it. See `notebook/README.md` for the format and
-`notebook/TEMPLATE.md` to start a new entry.
+`NOTEBOOK.md` holds dated entries, newest first, each tagged with its line of inquiry (for
+example `[corpus]`) and linked to the issues and pull requests it covers. An entry records the
+reasoning the code doesn't show: what the work set out to do and why; what was done, in terms
+of the question; what was tried and dropped; how the question changed; and what is still
+uncertain. An entry is drafted after the line of inquiry's work (or a significant step in it)
+is done, by an LLM if one did the drafting; a person then reviews and edits the text before it
+is merged.
+
+Entries are never edited once merged. If later work changes what an entry says, a new entry
+records that and names the entry it supersedes.
 
 The notebook is not a replacement for issues and pull requests, which keep the full detail; it
 is where someone catching up starts.
