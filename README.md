@@ -17,11 +17,20 @@ out correct; and calibration follows from grouping the verdicts by the withheld 
 The survey is built and ready to deploy: 309 items (291 real statements and 18 hidden
 quality-control items), spanning February 2020 to February 2022.
 
+## Start here
+
+New to this project? `notebook/` has a short entry per line of inquiry: what was asked, tried
+and found, and what remains uncertain. Read it before the issues and pull requests behind a
+line of inquiry, which keep the full detail. `AGENTS.md` sets out the conventions behind the
+notebook and this repository's issues and pull requests.
+
 ## Repository contents
 
 ```
 scripts/          pipeline code (run from repo root)
 data/answer_key/  sealed answer-key checksums (the only tracked data)
+notebook/         short entry per line of inquiry; start here
+AGENTS.md         conventions for issues, pull requests and the notebook
 ANALYSIS_PLAN.md  pre-specified analysis plan (work in progress)
 README.md
 LICENSE
