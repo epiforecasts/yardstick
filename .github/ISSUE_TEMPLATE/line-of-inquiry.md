@@ -12,6 +12,7 @@ this is worth opening.
 
 <!--
 What is wrong or missing, and what should happen instead or why it matters. Issues and pull
-requests belonging to this line of inquiry are opened as sub-issues of this one (see
-AGENTS.md). Label this `input wanted` if outside contributions or opinions are wanted.
+requests belonging to this line of inquiry join it as sub-issues of this one, or by closing
+one (see AGENTS.md). Optionally label this `input wanted` if outside contributions or opinions
+are wanted.
 -->

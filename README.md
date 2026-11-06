@@ -19,8 +19,8 @@ quality-control items), spanning February 2020 to February 2022.
 
 ## Start here
 
-New to this project? `NOTEBOOK.md` has a dated entry per update to a line of inquiry: what was
-asked, tried and found, and what remains uncertain. Read it before the issues and pull requests
+New to this project? `NOTEBOOK.md` has a dated entry per update to a line of inquiry: the
+intent, what was decided or changed, and what remains uncertain. Read it before the issues and pull requests
 behind a line of inquiry, which keep the full detail. `AGENTS.md` sets out the conventions
 behind the notebook and this repository's issues and pull requests.
 
