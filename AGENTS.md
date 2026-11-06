@@ -16,8 +16,8 @@ list from hiding which items are routine steps and which are the question that m
 
 The label is optional, and most useful where outsiders look for places to contribute. Where
 every contributor's input is wanted by default it says little. To ask a particular person,
-@-mention them, assign the item or request their review, which notify them in a way a label
-doesn't.
+@-mention them, assign the item or request their review. Each of these notifies them, which a
+label does not.
 
 Where it is used, apply `input wanted` to an issue or pull request where outside contributions
 or opinions are wanted, and remove it once that is no longer the case. Its absence is not a
@@ -37,8 +37,8 @@ parts:
 
 What was done belongs in the pull requests, which the entry links to.
 
-The pull request that does the work adds its entry, so the entry is reviewed with the change;
-an LLM may draft it, and a person reviews and edits the text. Entries are never edited once
+The pull request that does the work adds its entry, and the entry is reviewed with the change.
+An LLM may draft it, and a person reviews and edits the text. Entries are never edited once
 merged. If later work changes what an entry says, a new entry records that and names the entry
 it supersedes.
 
