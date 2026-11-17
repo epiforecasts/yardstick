@@ -19,4 +19,4 @@ the work adds its entry, and an LLM may draft it, but a person reviews and edits
 
 **Decided:** the corpus is the SPI-M-O consensus statements from February 2020 to February 2022, leaving out the UKHSA EMRG and 2009 H1N1 statements and claims that put a value on R other than above or below 1 (#1, #7). Each statement is stripped of its yardstick term, and independent reviewers judge with hindsight whether it turned out correct, without seeing the term. Calibration comes from grouping their verdicts by the withheld term.
 
-**Still open:** the validation protocol (#3), coverage and confidence wording (#4), sensitivity to the extraction (#5) and the analysis (#6).
+**Still open:** reproducibility and the sealing of the answer key (#2), the validation protocol (#3), coverage and confidence wording (#4), sensitivity to the extraction (#5) and the analysis (#6).
