@@ -26,7 +26,8 @@ Each reviewer agrees, before starting and until they have finished coding:
 
 - not to view the files in this folder or anywhere under `data/`;
 - to read the repository's files only as they currently stand, not earlier versions in its
-  history. Earlier versions of the workflow scripts embedded every statement with its band, and
+  history. Diffs count as history: the "Files changed" view of a pull request, `git log -p`,
+  `git show` and blame all show removed lines. Earlier versions of the workflow scripts embedded every statement with its band, and
   an earlier script listed the first version of the quality-control items with their answers.
   Those controls have been replaced (`../../ANALYSIS_PLAN.md` §9).
 
