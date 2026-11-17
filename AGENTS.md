@@ -85,6 +85,14 @@ A pull request names a person's decision only where that person overturned the a
 against what the agent proposed or did. Everywhere else, a decision is described without
 naming who made it.
 
+## Evidence in pull requests
+
+A pull request shows evidence that the change does what it says: the command that was run and its output, or the table, figure or counts the change produced. If the results should stay the same, the evidence is the check that they do, such as a rebuilt file matching its committed checksum. Evidence leaves out what the blinding hides from reviewers (`data/answer_key/README.md`): anything that reveals an item's band, including counts or tables by band, and anything that identifies the quality-control items.
+
+## Repeated corrections
+
+When a reviewer makes the same correction twice, the correction goes into this file. Agents follow it from then on.
+
 ## Open problem
 
 These conventions do not address unequal access to AI tools across contributors. Someone
