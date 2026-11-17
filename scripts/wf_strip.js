@@ -5,7 +5,8 @@ export const meta = {
 }
 
 // The claims are passed in as the workflow's args: data/strip_payload.json (build_strip_payload.py). They carry the
-// withheld bands, so they are kept out of the repository.
+// withheld bands, so they are kept out of the repository. The first run also included the first version of the
+// quality-control items, which were later replaced and are not in the rebuilt payload.
 const CLAIMS = args;
 
 const STRIP = {

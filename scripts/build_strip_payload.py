@@ -4,6 +4,10 @@ Each claim goes with the text around it in its statement (500 characters before,
 the workflow can resolve referents and verify the stripped proposition against the source.
 Writes data/strip_payload.json (the coding frame) and data/strip_payload_new.json (the claims
 from select_new_claims.py). Both carry the bands, so they stay out of the repository.
+
+The first run's input also held the first version of the quality-control items. Those were replaced
+(ANALYSIS_PLAN.md §9) and are left out here, so their entries in the archived strip_results.json
+have no counterpart in the rebuilt payload.
 """
 import csv, glob, json, re
 
