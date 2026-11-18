@@ -58,7 +58,7 @@ The first stripping run also included the first version of the quality-control i
 
 `build_survey_master.py` writes `data/SPI-M_Yardstick_Review_FINAL.json`, which imports into JISC Online Surveys (onlinesurveys.jisc.ac.uk). The survey has 310 pages: an introduction, then one page per item with the statement as a blockquote, its exact date, an assessment (correct, incorrect or cannot tell) and a confidence rating (high, medium or low). Items are titled "Item N", and no probability term or band appears anywhere.
 
-Reviewers work independently and do not see each other's responses until all have finished. For the analysis, export the responses from JISC and join them to `data/survey_item_map.csv` on the question, which gives each item its band and resolvability class.
+Deploy it to independent reviewers, and make sure none of them sees another's responses until all have finished. For the analysis, export the responses from JISC and join them to `data/survey_item_map.csv` on the question, which gives each item its band and resolvability class.
 
 ## Audit trail
 
