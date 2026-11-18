@@ -7,7 +7,8 @@ export const meta = {
   ],
 }
 
-// The claims are passed in as the workflow's args: the coding frame plus the first-version controls. They carry the
+// The claims are passed in as the workflow's args: the rows of the coding frame (data/coding_frame_dedup.csv, with
+// first_date renamed to date and kind set to "real") plus the first-version controls. They carry the
 // withheld bands, so they are kept out of the repository.
 const CLAIMS = args;
 
