@@ -131,9 +131,9 @@ Any departure from this plan will be recorded here with its reason.
     reviewer pool and kept out of the repository. The first stripping run's archived results
     keep the old controls; nothing downstream reads them.
   - *Worked example.* The strip prompt in `scripts/wf_strip.js` used one real claim, with its
-    probability term, as its example of a compound claim, and that line stayed in the current
-    version of the file until 18 November 2026. It is now a placeholder. A reviewer who read the
-    script before then could know the band of that one item.
+    probability term, as its example of a compound claim, and that line stayed in the
+    version of the file on the main branch until pull request #8 was merged. It is now a
+    placeholder. A reviewer who read the script before then could know the band of that one item.
   - *Checksums.* The checksums for `survey_item_map.csv` and `controls_key.json` that stood before
     this change (the item map's last set in commit 24028e8, the controls' unchanged since the first
     commit) were replaced when the controls changed (commit 93dde5d). Every earlier version stays
