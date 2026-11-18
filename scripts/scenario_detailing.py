@@ -34,5 +34,5 @@ with open("data/scenario_detailing_review.md","w",encoding="utf-8") as f:
             if prop: f.write(f"> {prop}\n\n")
             else: f.write(f"*dropped — {rat}*\n\n")
             f.write(f"<sub>· {rat}</sub>\n\n")
-print("wrote data/scenario_detailing_review.md + data/scenario_decisions.json")
+print("wrote data/scenario_detailing_review.md")
 print("actions:", dict(act))
