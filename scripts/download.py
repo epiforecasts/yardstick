@@ -1,7 +1,8 @@
-import json, time, os, re, hashlib, urllib.request, urllib.error
+import json, time, os, re, hashlib, subprocess, urllib.request, urllib.error
 UA="yardstick-research/0.1 (academic research on probability language calibration; sebastian.funk@lshtm.ac.uk)"
 recs=json.load(open("data/consensus_with_attachments.json"))
 os.makedirs("data/pdfs", exist_ok=True)
+os.makedirs("data/txt", exist_ok=True)
 manifest=[]
 ok=skip=err=0
 for rec in recs:
@@ -21,6 +22,9 @@ for rec in recs:
                 time.sleep(1.0)
             except Exception as e:
                 print(f"ERR {fn}: {e}"); err+=1; continue
+        # The claims were extracted from -layout text (poppler 26.01); other poppler versions can
+        # place figure axis labels differently.
+        subprocess.run(["pdftotext","-layout",dest,os.path.join("data/txt",fn[:-4]+".txt")],check=True)
         b=open(dest,"rb").read()
         manifest.append({"file":fn, "slug":slug, "title":rec["title"],
                          "first_published_at":rec["first_published_at"],

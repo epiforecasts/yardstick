@@ -2,41 +2,43 @@ import json, csv, re
 from collections import Counter
 from exclusions import EXCLUDE
 
-prov={r["claim_id"]:r for r in csv.DictReader(open("data/provenance.csv",encoding="utf-8"))}
-ck={c["claim_id"]:c for c in json.load(open("data/controls_key.json"))}
+frame={r["claim_id"]:r for r in csv.DictReader(open("data/coding_frame_dedup.csv",encoding="utf-8"))}
+controls=json.load(open("data/controls_key.json",encoding="utf-8"))
 decisions={d["item_id"]:d for d in json.load(open("data/scenario_decisions.json"))}
 
-def prov_date(src_claim_id):
-    return prov.get(src_claim_id,{}).get("exact_date","")
+BANDNUM={"remote chance":">0-5%","highly unlikely":"10-20%","unlikely":"25-35%",
+ "realistic possibility":"40-<50%","likely":"55-75%","probably":"55-75%","probable":"55-75%",
+ "highly likely":"80-90%","almost certain":"95-<100%","very likely":"OFF-YARDSTICK"}
+
+def frame_date(src_claim_id):
+    return frame[src_claim_id]["first_date"] if src_claim_id in frame else ""
 
 master=[]  # each: item_id, kind, exact_date, band, proposition, orig_class, flags
 
 # ---- 1. existing real items from propositions_final (fixed-fact set) ----
-existing=list(csv.DictReader(open("data/propositions_final.csv",encoding="utf-8")))
-for r in existing:
+for r in csv.DictReader(open("data/propositions_final.csv",encoding="utf-8")):
     if r["item_id"] in EXCLUDE:
         continue
-    if r["src_claim_id"][0]=="D":
-        master.append({"item_id":r["item_id"],"kind":"real","exact_date":prov_date(r["src_claim_id"]),
-            "band":r["band"],"proposition":r["proposition"],"orig_class":"fixed-fact","flags":""})
-    else:  # control
-        master.append({"item_id":r["item_id"],"kind":"control","exact_date":ck[r["item_id"]]["date"],
-            "band":r["band"],"proposition":r["proposition"],"orig_class":"control","flags":""})
+    master.append({"item_id":r["item_id"],"kind":"real","exact_date":frame_date(r["src_claim_id"]),
+        "band":r["band"],"proposition":r["proposition"],"orig_class":"fixed-fact","flags":""})
+
+# ---- 1b. quality-control items, written as bare propositions with a known answer ----
+for c in controls:
+    master.append({"item_id":c["item_id"],"kind":"control","exact_date":c["date"],
+        "band":f"{c['term']} ({BANDNUM[c['term']]})","proposition":c["proposition"],
+        "orig_class":"control","flags":""})
 
 # ---- 2. reinstate D104-a/b/c (detailed) ----
-D104_DATE=prov_date("D104")
+D104_DATE=frame_date("D104")
 for iid in ["D104-a","D104-b","D104-c"]:
     d=decisions[iid]
     master.append({"item_id":iid,"kind":"real","exact_date":D104_DATE,
-        "band":f"{d['band']} (10-20%)","proposition":d["new_proposition"],
+        "band":f"{d['band']} ({BANDNUM[d['band']]})","proposition":d["new_proposition"],
         "orig_class":"fixed-fact","flags":"omicron-scenario-detailed"})
 
 # ---- 3. new batch: apply scenario decisions, tag by original class ----
 newmeta={m["new_id"]:m for m in json.load(open("data/new_claims_meta.json")) if m.get("new_id")}
 newrows=list(csv.DictReader(open("data/new_propositions_review.csv",encoding="utf-8")))
-BANDNUM={"remote chance":">0-5%","highly unlikely":"10-20%","unlikely":"25-35%",
- "realistic possibility":"40-<50%","likely":"55-75%","probably":"55-75%","probable":"55-75%",
- "highly likely":"80-90%","almost certain":"95-<100%","very likely":"OFF-YARDSTICK"}
 def bandlabel(terms):
     t=re.sub(r"^an? ","",(terms or "").split(",")[0].strip().lower())
     return f"{t} ({BANDNUM.get(t,'?')})"

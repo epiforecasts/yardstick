@@ -1,6 +1,6 @@
 import json, csv, re
 from collections import Counter
-from exclusions import R_VALUE, R_VALUE_REASON
+from exclusions import R_VALUE, R_VALUE_REASON, DROPPED
 
 # ---- Stage A: exact candidate lineage (298 -> filter -> dedup -> 119) ----
 lin=list(csv.DictReader(open("data/lineage_candidates.csv",encoding="utf-8")))
@@ -19,23 +19,13 @@ for fate,n in Counter(r["filter_fate"] if not r["coding_id"] else "kept -> codin
 # ---- Stage B/C: 119 D-ids -> strip -> propositions -> survey/dropped ----
 strip={r["claim_id"]:r for r in json.load(open("data/strip_results.json"))}
 survey={r["item_id"]:r for r in csv.DictReader(open("data/survey_item_map.csv",encoding="utf-8"))}
-frame={r["claim_id"]:r for r in csv.DictReader(open("data/reviewer_frame.csv",encoding="utf-8"))}
+frame={r["claim_id"]:r for r in csv.DictReader(open("data/coding_frame_dedup.csv",encoding="utf-8"))}
 
-DROP_REASON={
- "D078":"methodological non-claim (probability word incidental)",
- "D112":"methodological non-claim (probability word incidental)",
- "D104-a":"references undefined model scenario (Table 1) — un-self-contained",
- "D104-b":"references undefined model scenario (Table 1) — un-self-contained",
- "D104-c":"references undefined model scenario (Table 1) — un-self-contained",
- "D013-a":"verbatim duplicate of an earlier-dated item",
- "D067":"verbatim duplicate of an earlier-dated item",
- "D106":"verbatim duplicate of an earlier-dated item",
-}
 ledger=[]
 for cid in frame:
     r=strip.get(cid)
-    band=frame[cid]["probability_term"]+" ("+frame[cid]["spim_band"]+")"
-    props=(r.get("propositions") if r else None) or [{"text":frame[cid]["claim"]}]
+    band=frame[cid]["term"]+" ("+frame[cid]["band"]+")"
+    props=(r.get("propositions") if r else None) or [{"text":frame[cid]["sentence"]}]
     multi=len(props)>1
     for j,p in enumerate(props):
         iid=f"{cid}{'-'+chr(97+j) if multi else ''}"
@@ -47,7 +37,7 @@ for cid in frame:
         # final status
         if iid in survey: status="IN SURVEY as "+survey[iid]["survey_item"]
         elif iid in ("D093-a","D093-b"): status="merged into D093 (IN SURVEY as "+survey.get("D093",{}).get("survey_item","?")+")"
-        elif iid in DROP_REASON: status="DROPPED: "+DROP_REASON[iid]
+        elif iid in DROPPED: status="DROPPED: "+DROPPED[iid]
         elif iid in R_VALUE: status="DROPPED: "+R_VALUE_REASON
         else: status="CHECK"
         ledger.append({"source_id":cid,"item_id":iid,"band":band,

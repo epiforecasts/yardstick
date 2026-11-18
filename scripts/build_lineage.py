@@ -1,13 +1,6 @@
 import json, csv, re, hashlib
+from textnorm import norm, keynorm
 
-# canonical claim UID: stable hash of (slug, normalized full sentence)
-def norm(s): return re.sub(r'\s+',' ',re.sub(r'[^a-z0-9 ]','',(s or '').lower())).strip()
-# aggressive key that removes embedded page-header junk + paragraph numbers
-def keynorm(s):
-    s=re.sub(r'\b\d+ of \d+\b','',s or '')
-    s=re.sub(r'\b(incidence|reproduction number|reissued|final)\b','',s,flags=re.I)
-    s=re.sub(r'\d+','',s)
-    return re.sub(r'\s+',' ',re.sub(r'[^a-z ]','',s.lower())).strip()
 
 classified=json.load(open("data/classified_claims.json"))            # 298 root, has slug/sentence/class/temporal
 dedup=list(csv.DictReader(open("data/coding_frame_dedup.csv",encoding="utf-8")))  # 119, has claim_id + slug + sentence

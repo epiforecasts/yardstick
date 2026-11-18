@@ -5,17 +5,27 @@ This folder holds the study's answer key:
 - `survey_item_map.csv`: each survey item's withheld probability band, resolvability class,
   and real/control status.
 - `controls_key.json`: the quality-control items and their known answers.
+- `scenario_decisions.json`: the hand-made decisions on items that refer to named model
+  scenarios, with their bands.
+- `strip_results.json`, `strip_results_new.json`: the output of the two runs that stripped the
+  probability wording from the statements, with each statement's band. These cannot be
+  regenerated exactly, so they are archived here as raw data.
 
-**These two files are not committed to the repository until coding is complete.** Only their
+**These files are not committed to the repository until coding is complete.** Only their
 SHA-256 checksums (`CHECKSUMS.txt`) are committed, as a pre-registration proof: the hashes fix
 the answer key in place without revealing it. After coding, the files are added and anyone can
 verify they match the committed hashes.
 
-The plaintext files are held locally (git-ignored) until then. All reviewers have agreed not to
-view them until they have finished coding.
+The plaintext files are held locally (git-ignored) until then. They are a frozen snapshot taken
+when the survey was finalised; the working copies used by the pipeline live in `data/` and are
+also not tracked.
 
-They are a frozen snapshot taken when the survey was finalised. The working copies used by the
-pipeline live in `data/` and are also not tracked.
+## Reviewers' agreement
+
+Each reviewer agrees, before starting and until they have finished coding:
+
+- not to open the files listed above, or anything else under `data/` apart from this README and `CHECKSUMS.txt`;
+- to read the repository's files only as they currently stand on the main branch, not other branches or earlier versions in its history. Diffs count as history: the "Files changed" view of a pull request, `git log -p`, `git show` and blame all show removed lines. Earlier versions of the scripts paired statements with their bands (the stripping and annotation workflows for every statement, the scenario decisions for 13 items) and listed the first version of the quality-control items with their answers. Until pull request #8 was merged, the strip prompt on the main branch also used one real claim, with its probability term, as an example. `../../ANALYSIS_PLAN.md` §9 records each exposure and the replacement of the controls.
 
 ## Tamper-proof pre-registration (recommended)
 

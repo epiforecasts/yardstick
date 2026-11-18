@@ -116,3 +116,28 @@ unsealing.
 ## 9. Deviations
 
 Any departure from this plan will be recorded here with its reason.
+
+- **Answer key exposed in the repository history (found November 2026, before coding).** The
+  first versions of the stripping and annotation workflows embedded every statement with its
+  band, the 18 quality-control items were listed with their answers in a superseded script and
+  embedded in two of those workflows, and the scenario decisions named the bands of 13 items. All of these were in the tracked scripts, which the
+  reviewers can read. The scripts now read claims, bands and controls from git-ignored files,
+  and the hand-made inputs are sealed with the answer key. The commits remain in the history.
+  - *Bands.* Recovering an item's band means matching its wording against the old scripts
+    deliberately, so reviewers instead agree not to read the history
+    (`data/answer_key/README.md`).
+  - *Controls.* A reviewer who had seen the old list would recognise a control on sight, so all
+    18 were replaced by new items with the same composition, written by someone outside the
+    reviewer pool and kept out of the repository. The first stripping run's archived results
+    keep the old controls; nothing downstream reads them.
+  - *Worked example.* The strip prompt in `scripts/wf_strip.js` used one real claim, with its
+    probability term, as its example of a compound claim, and that line stayed in the
+    version of the file on the main branch until pull request #8 was merged. It is now a
+    placeholder. A reviewer who read the script before then could know the band of that one item.
+  - *Checksums.* The checksums for `survey_item_map.csv` and `controls_key.json` that stood before
+    this change (the item map's last set in commit 24028e8, the controls' unchanged since the first
+    commit) were replaced when the controls changed (commit 93dde5d). Every earlier version stays
+    in the history of `data/answer_key/CHECKSUMS.txt`. Before the reseal, the item map rebuilt by
+    the converted scripts was compared with a copy of the data taken before any of these changes:
+    all 291 real items matched in every field apart from the survey item number, which was left
+    out of the comparison.

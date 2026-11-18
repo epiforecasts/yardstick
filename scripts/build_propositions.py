@@ -1,7 +1,8 @@
 import json, csv, re
 from collections import Counter
+from datetime import date
 res={r["claim_id"]:r for r in json.load(open("data/strip_results.json"))}
-frame={r["claim_id"]:r for r in csv.DictReader(open("data/reviewer_frame.csv",encoding="utf-8"))}
+frame={r["claim_id"]:r for r in csv.DictReader(open("data/coding_frame_dedup.csv",encoding="utf-8"))}
 
 def is_clean_prop(s):
     if not s or not s.strip(): return False
@@ -15,8 +16,8 @@ NONCLAIM=re.compile(r'\b(should (not )?be considered|are not forecasts|is a scen
 out=[]
 for cid,fr in frame.items():
     r=res.get(cid)
-    band=r.get("band","") if r else f"{fr['probability_term']} ({fr['spim_band']})"
-    props=(r.get("propositions") if r else None) or [{"text":fr["claim"]}]
+    band=r.get("band","") if r else f"{fr['term']} ({fr['band']})"
+    props=(r.get("propositions") if r else None) or [{"text":fr["sentence"]}]
     corr=r.get("corrected") if r else []
     faithful=r.get("faithful") if r else None
     multi=len(props)>1
@@ -32,8 +33,8 @@ for cid,fr in frame.items():
             flag="unfaithful-no-fix"
         if NONCLAIM.search(text): flag=(flag+";" if flag else "")+"possible-non-claim"
         item_id=f"{cid}{'-'+chr(97+j) if multi else ''}"
-        out.append({"item_id":item_id,"src_claim_id":cid,"month_year":fr["month_year"],"band":band,
-                    "proposition":text,"original_sentence":(r.get("clean_sentence","") if r else fr["claim"]),
+        out.append({"item_id":item_id,"src_claim_id":cid,"month_year":date.fromisoformat(fr["first_date"]).strftime("%B %Y"),"band":band,
+                    "proposition":text,"original_sentence":(r.get("clean_sentence","") if r else fr["sentence"]),
                     "review_flag":flag,"strip_notes":(r.get("strip_notes","") if r else ""),
                     "verify_issues":(r.get("verify_issues","") if r else "")})
 cols=["item_id","src_claim_id","month_year","band","proposition","original_sentence","review_flag","strip_notes","verify_issues"]
