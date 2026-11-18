@@ -81,17 +81,16 @@ under `data/`). Rough order:
 
 Items dropped by scope rule or on review are listed in `exclusions.py`. The `gen_jisc`,
 `gen_native`, `build_sheet*`, `build_final`, `build_survey_final`, `rclaims`, and `contexts`
-scripts and the `wf_annotate*.js` workflows are exploratory or superseded, kept for provenance;
-`data/archive_ai_runs/README.md` describes the abandoned annotation runs.
+scripts and the `wf_annotate*.js` workflows are exploratory or superseded, kept for provenance.
+
+`data/annotations.json` and `data/annotations_v2.json`, read by the superseded `build_sheet*` scripts, come from two runs of the `wf_annotate*.js` workflows that judged the coding-frame claims for resolvability with an LLM. Both failed validation and neither contributes to the study: the two runs agreed on fewer than half of the claims (Cohen's kappa 0.18), the judgements followed the wording of the prompt, and an audit found most "resolvable" judgements of the second run overstated. They are kept, untracked, in `data/archive_ai_runs/` as evidence for that finding.
 
 ### Inputs that are not generated
 
 No script can recreate four of the inputs. They are kept as data and, because each reveals bands
 or answers, sealed with the answer key (`data/answer_key/CHECKSUMS.txt`):
 
-- `strip_results.json`, `strip_results_new.json`: the output of the two stripping runs (16 and
-  28 July 2026). The workflow scripts name the model by an alias that does not pin a version,
-  and a rerun can differ.
+- `strip_results.json`, `strip_results_new.json`: the output of the two stripping runs (16 and 28 July 2026). Both ran in the Claude Code workflow runner, with every agent on the model alias `sonnet` (Claude Sonnet), as set in the scripts. The alias does not pin a model version, and a rerun can differ.
 - `scenario_decisions.json`: the hand-made decisions on scenario references.
 - `controls_key.json`: the quality-control items and their answers.
 
