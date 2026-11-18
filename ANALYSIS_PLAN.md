@@ -130,3 +130,7 @@ Any departure from this plan will be recorded here with its reason.
     18 were replaced by new items with the same composition, written by someone outside the
     reviewer pool and kept out of the repository. The first stripping run's archived results
     keep the old controls; nothing downstream reads them.
+  - *Worked example.* The strip prompt in `scripts/wf_strip.js` used one real claim, with its
+    probability term, as its example of a compound claim, and that line stayed in the current
+    version of the file until 18 November 2026. It is now a placeholder. A reviewer who read the
+    script before then could know the band of that one item.

@@ -155,9 +155,10 @@ Development Framework for All-Source Intelligence Assessment* (2019).
 ## Code and data availability
 
 Candidate statements were extracted from the source documents and rewritten into blinded
-propositions with LLM assistance and adversarial verification against the source. The exact
-prompts are in the workflow scripts (`scripts/wf_strip.js`, `wf_strip_new.js`,
-`wf_annotate.js`); the pipeline and audit trail are in this repository. Suggested methods
+propositions with LLM assistance and adversarial verification against the source. The prompts
+are in the workflow scripts (`scripts/wf_strip.js`, `wf_strip_new.js`, `wf_annotate.js`), exactly
+as run except for one worked example in `wf_strip.js`, which is a placeholder until coding is
+complete (`ANALYSIS_PLAN.md` §9); the pipeline and audit trail are in this repository. Suggested methods
 wording:
 
 > Candidate statements were extracted and rewritten into blinded propositions with LLM

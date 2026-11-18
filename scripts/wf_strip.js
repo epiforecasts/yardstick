@@ -7,6 +7,8 @@ export const meta = {
 // The claims are passed in as the workflow's args: data/strip_payload.json (build_strip_payload.py). They carry the
 // withheld bands, so they are kept out of the repository. The first run also included the first version of the
 // quality-control items, which were later replaced and are not in the rebuilt payload.
+// The worked example for splitting compound claims in the strip prompt is a placeholder. The runs used a real
+// claim with its probability term, which would reveal that item's band.
 const CLAIMS = args;
 
 const STRIP = {
@@ -51,7 +53,7 @@ Produce:
    - Remove every probability word (likely, unlikely, highly likely, almost certain, realistic possibility, probably, very likely, etc.) and meta-framing ("SPI-M-O considers... to be", "consensus view is that").
    - Make it SELF-CONTAINED: resolve leading referents ("Such restrictions", "They", "This", "It") to their antecedent from the source context. A reader with no context must understand it.
    - Drop non-probabilistic editorial tails ("...and so this is of particular importance", "...but should be carefully designed", "...which is concerning").
-   - SPLIT compound claims: if the sentence asserts two separable propositions ("unlikely to reduce final size AND unlikely to delay the peak"), emit one proposition per clause, each is_compound_part=true. A single proposition sets is_compound_part=false.
+   - SPLIT compound claims: if the sentence asserts two separable propositions ("it is likely that X will increase and Y will decrease"), emit one proposition per clause, each is_compound_part=true. A single proposition sets is_compound_part=false.
    - Preserve the claim's actual quantitative content (thresholds, comparators, numbers). Do not vague-ify.
    - Keep it faithful: the proposition must be exactly what SPI-M asserted, minus the probability. Do not add, strengthen, or soften.
 
