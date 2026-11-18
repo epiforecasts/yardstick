@@ -134,3 +134,9 @@ Any departure from this plan will be recorded here with its reason.
     probability term, as its example of a compound claim, and that line stayed in the current
     version of the file until 18 November 2026. It is now a placeholder. A reviewer who read the
     script before then could know the band of that one item.
+  - *Checksums.* The checksums first committed for `survey_item_map.csv` and `controls_key.json`
+    (commit 24028e8) were replaced when the controls changed (commit 93dde5d); both versions stay
+    in the history of `data/answer_key/CHECKSUMS.txt`. Before the reseal, the item map rebuilt by
+    the converted scripts was compared with a copy of the data taken before any of these changes:
+    all 291 real items matched in every field apart from the survey item number, which was left
+    out of the comparison.
