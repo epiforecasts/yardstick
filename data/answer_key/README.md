@@ -25,7 +25,7 @@ also not tracked.
 Each reviewer agrees, before starting and until they have finished coding:
 
 - not to view the files in this folder or anywhere under `data/`;
-- to read the repository's files only as they currently stand, not earlier versions in its history. Diffs count as history: the "Files changed" view of a pull request, `git log -p`, `git show` and blame all show removed lines. Earlier versions of the scripts paired statements with their bands (the stripping workflows for every statement, the scenario decisions for 13 items) and listed the first version of the quality-control items with their answers. Until pull request #8 was merged, the strip prompt on the main branch also used one real claim, with its probability term, as an example. `../../ANALYSIS_PLAN.md` §9 records each exposure and the replacement of the controls.
+- to read the repository's files only as they currently stand on the main branch, not other branches or earlier versions in its history. Diffs count as history: the "Files changed" view of a pull request, `git log -p`, `git show` and blame all show removed lines. Earlier versions of the scripts paired statements with their bands (the stripping workflows for every statement, the scenario decisions for 13 items) and listed the first version of the quality-control items with their answers. Until pull request #8 was merged, the strip prompt on the main branch also used one real claim, with its probability term, as an example. `../../ANALYSIS_PLAN.md` §9 records each exposure and the replacement of the controls.
 
 ## Tamper-proof pre-registration (recommended)
 
