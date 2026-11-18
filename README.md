@@ -114,8 +114,8 @@ question to recover each item's band and resolvability class for analysis.
 The pipeline (`build_lineage.py`, `build_ledger.py`) records the fate of every candidate
 statement, from raw extraction to final survey item:
 
-- `data/lineage_candidates.csv` and `data/final_lineage.csv`: each candidate's fate and the
-  reason it was included or excluded.
+- `data/lineage_candidates.csv`: each candidate's fate and the reason it was included or
+  excluded.
 - `data/audit_ledger.csv`: every proposition's transformations and final status.
 
 ## Sharing and embargo
