@@ -118,9 +118,9 @@ unsealing.
 Any departure from this plan will be recorded here with its reason.
 
 - **Answer key exposed in the repository history (found November 2026, before coding).** The
-  first versions of the stripping workflows embedded every statement with its band, a
-  superseded script listed the 18 quality-control items with their answers, and the scenario
-  decisions named the bands of 13 items. All of these were in the tracked scripts, which the
+  first versions of the stripping and annotation workflows embedded every statement with its
+  band, the 18 quality-control items were listed with their answers in a superseded script and
+  embedded in two of those workflows, and the scenario decisions named the bands of 13 items. All of these were in the tracked scripts, which the
   reviewers can read. The scripts now read claims, bands and controls from git-ignored files,
   and the hand-made inputs are sealed with the answer key. The commits remain in the history.
   - *Bands.* Recovering an item's band means matching its wording against the old scripts
