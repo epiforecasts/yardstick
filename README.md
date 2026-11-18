@@ -55,7 +55,7 @@ under `data/`). Rough order:
    API is used because the monthly SAGE collections omit about 12% of statements, including
    all of August 2021. The scope is set out in `ANALYSIS_PLAN.md`.
 2. `download.py`: retrieve the statements' PDFs (rate-limited, identifying User-Agent) and
-   extract their text with `pdftotext -layout` (poppler). Produces `data/pdfs/`, `data/txt/`,
+   extract their text with `pdftotext -layout` (poppler 26.01; other versions can place text differently). Produces `data/pdfs/`, `data/txt/`,
    and `data/manifest.json` (provenance with SHA-256).
 3. `scan.py`, `claims.py`, `classify.py`, `tense.py`, `make_frame.py`, `dedupe_frame.py`:
    extract candidate yardstick statements, classify by resolvability (whether a statement can
